@@ -1,8 +1,8 @@
-# 🚀 **xcancelussy** by kyle durepos
+# 🚀 **xcancelussybot** by kyle durepos
 
 <div align="center">
 
-![xcancelussy](https://img.shields.io/badge/xcancelussy-v1.0.0-blue?style=for-the-badge)
+![xcancelussybot](https://img.shields.io/badge/xcancelussybot-v1.0.0-blue?style=for-the-badge)
 ![Discord.js](https://img.shields.io/badge/discord.js-14.14.1-5865F2?style=for-the-badge&logo=discord)
 ![Node.js](https://img.shields.io/badge/Node.js-16+-339933?style=for-the-badge&logo=node.js)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)

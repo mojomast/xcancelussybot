@@ -1,5 +1,5 @@
 {
-  "name": "xcancel-discord-bot",
+  "name": "xcancelussybot",
   "version": "1.0.0",
   "description": "Discord bot that automatically replies with xcancel.com links when x.com links are detected",
   "main": "bot.js",
