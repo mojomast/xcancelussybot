@@ -9,6 +9,7 @@
 
 *🔗 The ultimate multi-platform link converter bot for Discord - Rob the parasites of engagement!*
 *💡 Idea by: `CQ'); DROP TABLE Channels;--`*
+*🎮 Coming in v0.2: Image Macros, RPG Games, Feature Requests!*
 
 </div>
 
@@ -205,6 +206,36 @@ Reddit discussion: https://reddit.com/r/technology/comments/xyz
 | `PINTEREST_COM` | Alternative for Pinterest URLs | `pin.it` | ❌ |
 | `SNAPCHAT_COM` | Alternative for Snapchat URLs | `snapinsta.app` | ❌ |
 
+## ⚙️ **Platform Toggle Configuration (v0.2)**
+
+Control which platforms the bot will monitor and convert:
+
+| 🔧 Toggle Variable | 📝 Description | ⚡ Default | 🔴 Required |
+|-------------------|---------------|-----------|-------------|
+| `ENABLE_X_COM` | Enable Twitter(X) URL conversion | `true` | ❌ |
+| `ENABLE_INSTAGRAM_COM` | Enable Instagram URL conversion | `true` | ❌ |
+| `ENABLE_TIKTOK_COM` | Enable TikTok URL conversion | `true` | ❌ |
+| `ENABLE_THREADS_NET` | Enable Threads URL conversion | `true` | ❌ |
+| `ENABLE_YOUTUBE_COM` | Enable YouTube URL conversion | `true` | ❌ |
+| `ENABLE_FACEBOOK_COM` | Enable Facebook URL conversion | `true` | ❌ |
+| `ENABLE_REDDIT_COM` | Enable Reddit URL conversion | `true` | ❌ |
+| `ENABLE_LINKEDIN_COM` | Enable LinkedIn URL conversion | `true` | ❌ |
+| `ENABLE_PINTEREST_COM` | Enable Pinterest URL conversion | `true` | ❌ |
+| `ENABLE_SNAPCHAT_COM` | Enable Snapchat URL conversion | `true` | ❌ |
+
+### **Platform Toggle Example**
+```env
+# Disable specific platforms
+ENABLE_YOUTUBE_COM=false
+ENABLE_FACEBOOK_COM=false
+ENABLE_LINKEDIN_COM=false
+
+# Keep others enabled
+ENABLE_X_COM=true
+ENABLE_INSTAGRAM_COM=true
+ENABLE_TIKTOK_COM=true
+```
+
 </div>
 
 ## 🔍 **Troubleshooting**
@@ -290,3 +321,29 @@ CMD ["npm", "start"]
 *🔗 Robbing the parasites of engagement since 2025*
 
 </div>
+
+---
+
+## 🚀 **v0.2 Preview - Coming Soon!**
+
+### 🎨 **Image Macro System**
+- Store imgur.com images with custom keywords
+- Trigger with `!!keyword` commands
+- Admin controls for macro management
+- Rate limiting and validation
+
+### 🎮 **Idler-Style RPG Game**
+- Admin-activated RPG channels
+- Player stats, inventory, and combat
+- Turn-based PvP system
+- Exploration and shop mechanics
+
+### 📝 **Bot Feature Requests**
+- User submission system for new features
+- Admin review and approval workflow
+- Request tracking and status updates
+- Community-driven development
+
+*See `version0.2dev.md` for detailed development roadmap!*
+
+---

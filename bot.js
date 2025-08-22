@@ -9,9 +9,28 @@ const config = {
   maxRepliesPerMinute: parseInt(process.env.MAX_REPLIES_PER_MINUTE) || 30
 };
 
+// Platform toggle configuration
+function loadPlatformSettings() {
+  const platformSettings = {
+    'x.com': process.env.ENABLE_X_COM !== 'false',
+    'instagram.com': process.env.ENABLE_INSTAGRAM_COM !== 'false',
+    'tiktok.com': process.env.ENABLE_TIKTOK_COM !== 'false',
+    'threads.net': process.env.ENABLE_THREADS_NET !== 'false',
+    'youtube.com': process.env.ENABLE_YOUTUBE_COM !== 'false',
+    'facebook.com': process.env.ENABLE_FACEBOOK_COM !== 'false',
+    'reddit.com': process.env.ENABLE_REDDIT_COM !== 'false',
+    'linkedin.com': process.env.ENABLE_LINKEDIN_COM !== 'false',
+    'pinterest.com': process.env.ENABLE_PINTEREST_COM !== 'false',
+    'snapchat.com': process.env.ENABLE_SNAPCHAT_COM !== 'false'
+  };
+
+  return platformSettings;
+}
+
 // Site mappings configuration
 function loadSiteMappings() {
   const mappings = new Map();
+  const platformSettings = loadPlatformSettings();
 
   // Default mappings
   const defaultMappings = {
@@ -37,17 +56,22 @@ function loadSiteMappings() {
     'www.snapchat.com': 'snapinsta.app'
   };
 
-  // Load default mappings
+  // Load default mappings only for enabled platforms
   Object.entries(defaultMappings).forEach(([source, target]) => {
-    mappings.set(source, target);
+    const baseDomain = source.replace(/^www\./, '');
+    if (platformSettings[baseDomain]) {
+      mappings.set(source, target);
+    }
   });
 
-  // Load custom mappings from environment variables
+  // Load custom mappings from environment variables for enabled platforms
   Object.keys(process.env).forEach(key => {
     if (key.endsWith('_COM') || key.endsWith('_NET') || key.endsWith('_ORG')) {
       const domain = key.toLowerCase().replace(/_/g, '.');
+      const baseDomain = domain.replace(/^www\./, '');
       const target = process.env[key];
-      if (target && target.trim()) {
+
+      if (target && target.trim() && platformSettings[baseDomain] !== false) {
         mappings.set(domain, target.trim());
         // Also add www. variant if not already present
         const wwwDomain = `www.${domain}`;
