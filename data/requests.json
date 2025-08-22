@@ -1,0 +1,14 @@
+{
+  "requests": {},
+  "settings": {
+    "maxRequestsPerUser": 3,
+    "requestCooldownHours": 24,
+    "maxRequestLength": 500
+  },
+  "stats": {
+    "totalRequests": 0,
+    "approvedRequests": 0,
+    "rejectedRequests": 0,
+    "pendingRequests": 0
+  }
+}

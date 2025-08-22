@@ -1,0 +1,23 @@
+{
+  "macros": {
+    "doge": {
+      "url": "https://imgur.com/gallery/doge123",
+      "addedBy": "admin",
+      "addedAt": "2025-01-22T03:30:00.000Z",
+      "usageCount": 0,
+      "lastUsed": null
+    },
+    "cat": {
+      "url": "https://imgur.com/gallery/cat456",
+      "addedBy": "user123",
+      "addedAt": "2025-01-22T03:30:00.000Z",
+      "usageCount": 0,
+      "lastUsed": null
+    }
+  },
+  "settings": {
+    "maxMacrosPerUser": 5,
+    "cooldownSeconds": 30,
+    "allowedDomains": ["imgur.com", "i.imgur.com"]
+  }
+}

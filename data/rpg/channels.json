@@ -1,0 +1,7 @@
+{
+  "activeChannels": {},
+  "settings": {
+    "maxActiveChannels": 5,
+    "channelTimeoutHours": 24
+  }
+}

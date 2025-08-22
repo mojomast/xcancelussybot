@@ -28,6 +28,9 @@
 | **📊 Logging** | Comprehensive logging for monitoring and debugging |
 | **⚙️ Configurable** | Environment-based setup for easy deployment and custom platform mappings |
 | **🔄 Multi-Platform** | Support for Twitter(X), Instagram, TikTok, Threads, and more with easy configuration |
+| **🎨 Image Macros** | Custom keyword-triggered imgur images with admin management |
+| **🎮 RPG System** | Turn-based RPG game playable in Discord channels |
+| **📝 Feature Requests** | Community-driven development with user request submission |
 
 </div>
 
@@ -205,6 +208,110 @@ Reddit discussion: https://reddit.com/r/technology/comments/xyz
 | `LINKEDIN_COM` | Alternative for LinkedIn URLs | `libredd.it` | ❌ |
 | `PINTEREST_COM` | Alternative for Pinterest URLs | `pin.it` | ❌ |
 | `SNAPCHAT_COM` | Alternative for Snapchat URLs | `snapinsta.app` | ❌ |
+
+## 🎨 **Image Macro System (v0.2)**
+
+Store and trigger imgur.com images with custom keywords!
+
+| 🎨 Command | Description | Permission Required |
+|------------|-------------|-------------------|
+| `!!<keyword>` | Trigger image macro | None (all users) |
+| `!macro add <keyword> <imgur_url>` | Add new image macro | Administrator |
+| `!macro remove <keyword>` | Remove image macro | Administrator |
+| `!macro list` | List all macros | Administrator |
+
+### **Image Macro Examples**
+```
+Admin: !macro add "doge" https://imgur.com/doge123
+Bot: ✅ Image macro "doge" added successfully!
+
+User: !!doge
+Bot: [Posts the doge image]
+
+Admin: !macro list
+Bot: 📝 **Image Macros:**
+     • !!doge → https://imgur.com/doge123
+     • !!cat → https://imgur.com/cat456
+```
+
+### **Image Macro Settings**
+| 🔧 Variable | 📝 Description | ⚡ Default | 🔴 Required |
+|-------------|---------------|-----------|-------------|
+| `MAX_MACROS_PER_USER` | Max macros per user | `5` | ❌ |
+| `MACRO_COOLDOWN_SECONDS` | Cooldown between uses | `30` | ❌ |
+
+## 🎮 **RPG System (v0.2)**
+
+Turn-based RPG game playable in Discord channels!
+
+| 🎮 Command | Description | Permission Required |
+|------------|-------------|-------------------|
+| `!rpg start [channel]` | Start RPG in channel | Administrator |
+| `!rpg stop [channel]` | Stop RPG in channel | Administrator |
+| `!rpg join` | Join the RPG game | None (all users) |
+| `!rpg stats` | Show your player stats | None |
+| `!rpg inventory` | Show your inventory | None |
+| `!rpg explore` | Explore for items/gold | None |
+| `!rpg fight @user` | Fight another player | None |
+
+### **RPG Examples**
+```
+Admin: !rpg start #adventure-channel
+Bot: 🎮 RPG activated in #adventure-channel! Players can now join with `!rpg join`
+
+User: !rpg join
+Bot: 🎮 Welcome to the RPG, username! You are now a Level 1 Adventurer with 100 HP, 10 ATK, and 50 gold!
+
+User: !rpg explore
+Bot: 🗺️ You found some gold! (+25)
+
+User: !rpg fight @otheruser
+Bot: ⚔️ **Combat Results:**
+     username deals 12 damage to otheruser!
+     otheruser deals 8 damage to username!
+     Both players survive the battle!
+```
+
+### **RPG Settings**
+| 🔧 Variable | 📝 Description | ⚡ Default | 🔴 Required |
+|-------------|---------------|-----------|-------------|
+| `RPG_MAX_PLAYERS_PER_CHANNEL` | Max players per channel | `20` | ❌ |
+| `RPG_COMBAT_COOLDOWN` | Cooldown between actions | `60` | ❌ |
+
+## 📝 **Bot Feature Requests (v0.2)**
+
+Allow users to submit feature requests for bot development!
+
+| 📝 Command | Description | Permission Required |
+|------------|-------------|-------------------|
+| `!request <description>` | Submit feature request | None (all users) |
+| `!request list` | List all requests | None |
+| `!request status <id>` | Check request status | None |
+| `!request approve <id>` | Approve request | Administrator |
+
+### **Bot Request Examples**
+```
+User: !request Add support for GIF macros
+Bot: 📝 **Request #42 submitted successfully!**
+     Description: Add support for GIF macros
+     Status: Pending Review
+     Use `!request status 42` to check the status of your request.
+
+User: !request status 42
+Bot: 📊 **Request #42 Status:**
+     Description: Add support for GIF macros
+     Status: PENDING
+     Author: username
+     Submitted: 1/22/2025
+
+Admin: !request approve 42
+Bot: ✅ Request #42 approved! The feature "Add support for GIF macros" will be considered for implementation.
+
+User: !request list
+Bot: 📋 **Feature Requests:**
+     ⏳ **#42**: Add support for GIF macros - by username
+     ✅ **#41**: Fix image macro cooldown - by otheruser
+```
 
 ## ⚙️ **Platform Toggle Configuration (v0.2)**
 

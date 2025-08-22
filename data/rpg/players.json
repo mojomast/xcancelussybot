@@ -1,0 +1,15 @@
+{
+  "players": {},
+  "settings": {
+    "startingStats": {
+      "health": 100,
+      "attack": 10,
+      "defense": 5,
+      "gold": 50,
+      "level": 1,
+      "experience": 0
+    },
+    "combatCooldown": 60,
+    "maxPlayersPerChannel": 20
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "activeGames": {},
+  "settings": {
+    "autoSaveInterval": 300,
+    "maxGameDuration": 3600
+  }
+}
