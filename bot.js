@@ -22,7 +22,19 @@ function loadSiteMappings() {
     'tiktok.com': 'snaptik.app',
     'www.tiktok.com': 'snaptik.app',
     'threads.net': 'photomate.online',
-    'www.threads.net': 'photomate.online'
+    'www.threads.net': 'photomate.online',
+    'youtube.com': 'ytb.trom.tf',
+    'www.youtube.com': 'ytb.trom.tf',
+    'facebook.com': 'mbasic.facebook.com',
+    'www.facebook.com': 'mbasic.facebook.com',
+    'reddit.com': 'teddit.net',
+    'www.reddit.com': 'teddit.net',
+    'linkedin.com': 'libredd.it',
+    'www.linkedin.com': 'libredd.it',
+    'pinterest.com': 'pin.it',
+    'www.pinterest.com': 'pin.it',
+    'snapchat.com': 'snapinsta.app',
+    'www.snapchat.com': 'snapinsta.app'
   };
 
   // Load default mappings

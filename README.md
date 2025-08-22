@@ -20,7 +20,7 @@
 
 | 🚀 Feature | Description |
 |------------|-------------|
-| **🎯 Smart Detection** | Advanced regex scanning for multiple platform URLs (Twitter, Instagram, TikTok, Threads) |
+| **🎯 Smart Detection** | Advanced regex scanning for 10+ platform URLs (Twitter, Instagram, TikTok, Threads, YouTube, Facebook, Reddit, LinkedIn, Pinterest, Snapchat) |
 | **⚡ Instant Replies** | Lightning-fast responses with alternative links to rob the parasites of engagement |
 | **🛡️ Rate Limiting** | Anti-spam protection with configurable limits |
 | **🔧 Error Handling** | Robust handling of malformed URLs and edge cases |
@@ -122,7 +122,7 @@ THREADS_NET=photomate.online
 ## How It Works
 
 1. **Link Detection**: The bot uses dynamic regex to find supported platform URLs in messages
-2. **URL Conversion**: Converts URLs using configurable mappings (e.g., `x.com/...` → `xcancel.com/...`, `instagram.com/...` → `imginn.com/...`)
+2. **URL Conversion**: Converts URLs using configurable mappings for 10+ platforms (Twitter, Instagram, TikTok, Threads, YouTube, Facebook, Reddit, LinkedIn, Pinterest, Snapchat)
 3. **Automatic Reply**: Responds with alternative links in a formatted message
 4. **Rate Limiting**: Ensures users can't trigger excessive replies
 5. **Multi-Platform Support**: Easily extensible to support new platforms via environment configuration
@@ -162,6 +162,28 @@ This TikTok is amazing! https://tiktok.com/@user/video/1234567890
 1. https://snaptik.app/@user/video/1234567890
 ```
 
+**User Message:**
+```
+Check out this YouTube video: https://youtube.com/watch?v=abc123
+```
+
+**Bot Reply:**
+```
+🔗 **Alternative links:**
+1. https://ytb.trom.tf/watch?v=abc123
+```
+
+**User Message:**
+```
+Reddit discussion: https://reddit.com/r/technology/comments/xyz
+```
+
+**Bot Reply:**
+```
+🔗 **Alternative links:**
+1. https://teddit.net/r/technology/comments/xyz
+```
+
 ## ⚙️ **Configuration Options**
 
 <div align="center">
@@ -176,6 +198,12 @@ This TikTok is amazing! https://tiktok.com/@user/video/1234567890
 | `INSTAGRAM_COM` | Alternative for Instagram URLs | `imginn.com` | ❌ |
 | `TIKTOK_COM` | Alternative for TikTok URLs | `snaptik.app` | ❌ |
 | `THREADS_NET` | Alternative for Threads URLs | `photomate.online` | ❌ |
+| `YOUTUBE_COM` | Alternative for YouTube URLs | `ytb.trom.tf` | ❌ |
+| `FACEBOOK_COM` | Alternative for Facebook URLs | `mbasic.facebook.com` | ❌ |
+| `REDDIT_COM` | Alternative for Reddit URLs | `teddit.net` | ❌ |
+| `LINKEDIN_COM` | Alternative for LinkedIn URLs | `libredd.it` | ❌ |
+| `PINTEREST_COM` | Alternative for Pinterest URLs | `pin.it` | ❌ |
+| `SNAPCHAT_COM` | Alternative for Snapchat URLs | `snapinsta.app` | ❌ |
 
 </div>
 

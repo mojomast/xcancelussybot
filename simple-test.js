@@ -10,7 +10,19 @@ const siteMappings = new Map([
   ['tiktok.com', 'snaptik.app'],
   ['www.tiktok.com', 'snaptik.app'],
   ['threads.net', 'photomate.online'],
-  ['www.threads.net', 'photomate.online']
+  ['www.threads.net', 'photomate.online'],
+  ['youtube.com', 'ytb.trom.tf'],
+  ['www.youtube.com', 'ytb.trom.tf'],
+  ['facebook.com', 'mbasic.facebook.com'],
+  ['www.facebook.com', 'mbasic.facebook.com'],
+  ['reddit.com', 'teddit.net'],
+  ['www.reddit.com', 'teddit.net'],
+  ['linkedin.com', 'libredd.it'],
+  ['www.linkedin.com', 'libredd.it'],
+  ['pinterest.com', 'pin.it'],
+  ['www.pinterest.com', 'pin.it'],
+  ['snapchat.com', 'snapinsta.app'],
+  ['www.snapchat.com', 'snapinsta.app']
 ]);
 
 // Convert URL using site mappings
@@ -100,6 +112,36 @@ function testConvertUrl() {
       description: 'Threads URL'
     },
     {
+      input: 'https://youtube.com/watch?v=abc123',
+      expected: 'https://ytb.trom.tf/watch?v=abc123',
+      description: 'YouTube URL'
+    },
+    {
+      input: 'https://www.facebook.com/user/posts/123',
+      expected: 'https://mbasic.facebook.com/user/posts/123',
+      description: 'Facebook URL with www'
+    },
+    {
+      input: 'https://reddit.com/r/technology/comments/xyz',
+      expected: 'https://teddit.net/r/technology/comments/xyz',
+      description: 'Reddit URL'
+    },
+    {
+      input: 'https://www.linkedin.com/in/username',
+      expected: 'https://libredd.it/in/username',
+      description: 'LinkedIn URL with www'
+    },
+    {
+      input: 'https://pinterest.com/pin/123456789',
+      expected: 'https://pin.it/pin/123456789',
+      description: 'Pinterest URL'
+    },
+    {
+      input: 'https://snapchat.com/add/username',
+      expected: 'https://snapinsta.app/add/username',
+      description: 'Snapchat URL'
+    },
+    {
       input: 'https://example.com/test',
       expected: null,
       description: 'Non-supported URL (should return null)'
@@ -161,9 +203,9 @@ function testExtractSupportedLinks() {
       description: 'Mixed supported and unsupported links'
     },
     {
-      input: 'Multiple platforms: https://x.com/test/123 https://instagram.com/user/photo https://tiktok.com/@user/video/456',
-      expectedCount: 3,
-      description: 'Multiple supported platforms'
+      input: 'Multiple platforms: https://x.com/test/123 https://instagram.com/user/photo https://tiktok.com/@user/video/456 https://youtube.com/watch?v=789 https://reddit.com/r/test',
+      expectedCount: 5,
+      description: 'Multiple supported platforms (5 platforms)'
     },
     {
       input: 'No links here just text',
