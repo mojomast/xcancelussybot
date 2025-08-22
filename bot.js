@@ -4,6 +4,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 // Bot configuration
 const config = {
   token: process.env.DISCORD_TOKEN,
+  name: process.env.BOT_NAME || 'SlopBot™',
   prefix: process.env.BOT_PREFIX || '!',
   logLevel: process.env.LOG_LEVEL || 'info',
   maxRepliesPerMinute: parseInt(process.env.MAX_REPLIES_PER_MINUTE) || 30
@@ -890,9 +891,17 @@ function extractSupportedLinks(content) {
 }
 
 // Event: Bot ready
-client.once('ready', () => {
+client.once('ready', async () => {
   logger.info(`Bot is ready! Logged in as ${client.user.tag}`);
   logger.info(`Bot is monitoring ${client.guilds.cache.size} servers`);
+
+  // Set bot username to configured name
+  try {
+    await client.user.setUsername(config.name);
+    logger.info(`Bot username set to ${config.name}`);
+  } catch (error) {
+    logger.error(`Failed to set bot username to ${config.name}: ${error.message}`);
+  }
 });
 
 // Event: Message received

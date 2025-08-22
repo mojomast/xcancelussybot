@@ -256,6 +256,7 @@ Reddit discussion: https://reddit.com/r/technology/comments/xyz
 | 🔧 Variable | 📝 Description | ⚡ Default | 🔴 Required |
 |-------------|---------------|-----------|-------------|
 | `DISCORD_TOKEN` | Your Discord bot token | - | ✅ |
+| `BOT_NAME` | Bot's display name | `SlopBot™` | ❌ |
 | `BOT_PREFIX` | Command prefix | `!` | ❌ |
 | `LOG_LEVEL` | Logging verbosity | `info` | ❌ |
 | `MAX_REPLIES_PER_MINUTE` | Anti-spam rate limit | `30` | ❌ |
