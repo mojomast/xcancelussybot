@@ -9,6 +9,48 @@ const config = {
   maxRepliesPerMinute: parseInt(process.env.MAX_REPLIES_PER_MINUTE) || 30
 };
 
+// Site mappings configuration
+function loadSiteMappings() {
+  const mappings = new Map();
+
+  // Default mappings
+  const defaultMappings = {
+    'x.com': 'xcancel.com',
+    'www.x.com': 'xcancel.com',
+    'instagram.com': 'imginn.com',
+    'www.instagram.com': 'imginn.com',
+    'tiktok.com': 'snaptik.app',
+    'www.tiktok.com': 'snaptik.app',
+    'threads.net': 'photomate.online',
+    'www.threads.net': 'photomate.online'
+  };
+
+  // Load default mappings
+  Object.entries(defaultMappings).forEach(([source, target]) => {
+    mappings.set(source, target);
+  });
+
+  // Load custom mappings from environment variables
+  Object.keys(process.env).forEach(key => {
+    if (key.endsWith('_COM') || key.endsWith('_NET') || key.endsWith('_ORG')) {
+      const domain = key.toLowerCase().replace(/_/g, '.');
+      const target = process.env[key];
+      if (target && target.trim()) {
+        mappings.set(domain, target.trim());
+        // Also add www. variant if not already present
+        const wwwDomain = `www.${domain}`;
+        if (!mappings.has(wwwDomain)) {
+          mappings.set(wwwDomain, target.trim());
+        }
+      }
+    }
+  });
+
+  return mappings;
+}
+
+const siteMappings = loadSiteMappings();
+
 // Rate limiting
 const replyHistory = new Map();
 const REPLY_WINDOW_MS = 60 * 1000; // 1 minute
@@ -22,8 +64,15 @@ const client = new Client({
   ]
 });
 
-// Regex pattern for x.com links (case insensitive)
-const X_COM_REGEX = /\bhttps?:\/\/(?:www\.)?x\.com\/([^\s]+)/gi;
+// Dynamic regex pattern for all supported domains
+function createUrlRegex(domains) {
+  const domainPatterns = Array.from(domains.keys())
+    .map(domain => domain.replace(/\./g, '\\.'))
+    .join('|');
+  return new RegExp(`\\bhttps?:\/\/(?:www\\.)?(${domainPatterns})\/([^\\s]+)`, 'gi');
+}
+
+const URL_REGEX = createUrlRegex(siteMappings);
 
 // Logger utility
 const logger = {
@@ -32,12 +81,14 @@ const logger = {
   error: (msg) => console.error(`[ERROR] ${msg}`)
 };
 
-// Convert x.com URL to xcancel.com
-function convertToXCancel(url) {
+// Convert URL using site mappings
+function convertUrl(url) {
   try {
     const urlObj = new URL(url);
-    if (urlObj.hostname === 'x.com' || urlObj.hostname === 'www.x.com') {
-      urlObj.hostname = 'xcancel.com';
+    const targetDomain = siteMappings.get(urlObj.hostname);
+
+    if (targetDomain) {
+      urlObj.hostname = targetDomain;
       urlObj.protocol = 'https:'; // Ensure HTTPS
       return urlObj.toString();
     }
@@ -70,22 +121,27 @@ function checkRateLimit(userId) {
   return true;
 }
 
-// Extract x.com links from message
-function extractXComLinks(content) {
+// Extract supported links from message
+function extractSupportedLinks(content) {
   const links = [];
   let match;
 
   // Reset regex lastIndex
-  X_COM_REGEX.lastIndex = 0;
+  URL_REGEX.lastIndex = 0;
 
-  while ((match = X_COM_REGEX.exec(content)) !== null) {
-    links.push({
-      original: match[0],
-      converted: convertToXCancel(match[0])
-    });
+  while ((match = URL_REGEX.exec(content)) !== null) {
+    const originalUrl = match[0];
+    const convertedUrl = convertUrl(originalUrl);
+
+    if (convertedUrl) {
+      links.push({
+        original: originalUrl,
+        converted: convertedUrl
+      });
+    }
   }
 
-  return links.filter(link => link.converted !== null);
+  return links;
 }
 
 // Event: Bot ready
@@ -105,16 +161,16 @@ client.on('messageCreate', async (message) => {
       return; // Silently ignore if rate limited
     }
 
-    // Extract x.com links
-    const xLinks = extractXComLinks(message.content);
+    // Extract supported links
+    const supportedLinks = extractSupportedLinks(message.content);
 
-    if (xLinks.length > 0) {
-      logger.info(`Found ${xLinks.length} x.com links in message from ${message.author.tag}`);
+    if (supportedLinks.length > 0) {
+      logger.info(`Found ${supportedLinks.length} supported links in message from ${message.author.tag}`);
 
       // Create reply message
       let replyContent = '🔗 **Alternative links:**\n';
 
-      xLinks.forEach((link, index) => {
+      supportedLinks.forEach((link, index) => {
         replyContent += `${index + 1}. ${link.converted}\n`;
       });
 
@@ -124,7 +180,7 @@ client.on('messageCreate', async (message) => {
         allowedMentions: { repliedUser: false } // Don't ping the user
       });
 
-      logger.info(`Replied to message with ${xLinks.length} converted links`);
+      logger.info(`Replied to message with ${supportedLinks.length} converted links`);
     }
 
   } catch (error) {

@@ -1,11 +1,11 @@
-const { convertToXCancel, extractXComLinks } = require('./bot.js');
+const { convertUrl, extractSupportedLinks } = require('./bot.js');
 
 // Mock console methods to avoid noise during testing
 console.log = () => {};
 console.warn = () => {};
 console.error = () => {};
 
-function testConvertToXCancel() {
+function testConvertUrl() {
   console.log('\n🧪 Testing URL conversion logic...');
 
   const testCases = [
@@ -25,9 +25,24 @@ function testConvertToXCancel() {
       description: 'HTTP x.com URL (should convert to HTTPS)'
     },
     {
+      input: 'https://instagram.com/example/post123',
+      expected: 'https://imginn.com/example/post123',
+      description: 'Instagram URL'
+    },
+    {
+      input: 'https://www.tiktok.com/@user/video/1234567890',
+      expected: 'https://snaptik.app/@user/video/1234567890',
+      description: 'TikTok URL with www'
+    },
+    {
+      input: 'https://threads.net/@user/post123',
+      expected: 'https://photomate.online/@user/post123',
+      description: 'Threads URL'
+    },
+    {
       input: 'https://example.com/test',
       expected: null,
-      description: 'Non-x.com URL (should return null)'
+      description: 'Non-supported URL (should return null)'
     },
     {
       input: 'invalid-url',
@@ -41,7 +56,7 @@ function testConvertToXCancel() {
 
   testCases.forEach((testCase, index) => {
     try {
-      const result = convertToXCancel(testCase.input);
+      const result = convertUrl(testCase.input);
       if (result === testCase.expected) {
         console.log(`✅ Test ${index + 1}: ${testCase.description}`);
         passed++;
@@ -61,7 +76,7 @@ function testConvertToXCancel() {
   return failed === 0;
 }
 
-function testExtractXComLinks() {
+function testExtractSupportedLinks() {
   console.log('\n🧪 Testing link extraction from messages...');
 
   const testCases = [
@@ -76,9 +91,19 @@ function testExtractXComLinks() {
       description: 'Multiple x.com links'
     },
     {
-      input: 'Mixed links: https://x.com/test/123 and https://example.com/page',
+      input: 'Instagram post: https://instagram.com/example/post123',
       expectedCount: 1,
-      description: 'Mixed x.com and other links'
+      description: 'Single Instagram link'
+    },
+    {
+      input: 'Mixed links: https://x.com/test/123 and https://instagram.com/user/photo and https://example.com/page',
+      expectedCount: 2,
+      description: 'Mixed supported and unsupported links'
+    },
+    {
+      input: 'Multiple platforms: https://x.com/test/123 https://instagram.com/user/photo https://tiktok.com/@user/video/456',
+      expectedCount: 3,
+      description: 'Multiple supported platforms'
     },
     {
       input: 'No links here just text',
@@ -97,7 +122,7 @@ function testExtractXComLinks() {
 
   testCases.forEach((testCase, index) => {
     try {
-      const result = extractXComLinks(testCase.input);
+      const result = extractSupportedLinks(testCase.input);
       if (result.length === testCase.expectedCount) {
         console.log(`✅ Test ${index + 1}: ${testCase.description}`);
         passed++;
@@ -122,8 +147,8 @@ function testExtractXComLinks() {
 function runTests() {
   console.log('🚀 Starting Discord Bot Core Functionality Tests...\n');
 
-  const urlTestPassed = testConvertToXCancel();
-  const extractionTestPassed = testExtractXComLinks();
+  const urlTestPassed = testConvertUrl();
+  const extractionTestPassed = testExtractSupportedLinks();
 
   console.log('\n🎯 Overall Test Results:');
   console.log(`   URL Conversion: ${urlTestPassed ? '✅ PASS' : '❌ FAIL'}`);
@@ -134,7 +159,7 @@ function runTests() {
     console.log('📝 Note: To fully test the Discord bot, you\'ll need to:');
     console.log('   1. Set up a Discord bot token in .env file');
     console.log('   2. Invite the bot to a Discord server');
-    console.log('   3. Run the bot and test with actual x.com links');
+    console.log('   3. Run the bot and test with actual supported platform links');
   } else {
     console.log('\n⚠️  Some tests failed. Please check the implementation.');
     process.exit(1);
@@ -143,8 +168,8 @@ function runTests() {
 
 // Export functions for testing
 module.exports = {
-  convertToXCancel,
-  extractXComLinks
+  convertUrl,
+  extractSupportedLinks
 };
 
 // Run tests if this file is executed directly

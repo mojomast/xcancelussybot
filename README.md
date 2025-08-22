@@ -2,12 +2,12 @@
 
 <div align="center">
 
-![xcancelussybot](https://img.shields.io/badge/xcancelussybot-v1.0.0-blue?style=for-the-badge)
+![xcancelussybot](https://img.shields.io/badge/xcancelussybot-v2.0.0-blue?style=for-the-badge)
 ![Discord.js](https://img.shields.io/badge/discord.js-14.14.1-5865F2?style=for-the-badge&logo=discord)
 ![Node.js](https://img.shields.io/badge/Node.js-16+-339933?style=for-the-badge&logo=node.js)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-*🔗 The ultimate x.com → xcancel.com converter bot for Discord*
+*🔗 The ultimate multi-platform link converter bot for Discord - Rob the parasites of engagement!*
 *💡 Idea by: `CQ'); DROP TABLE Channels;--`*
 
 </div>
@@ -20,12 +20,13 @@
 
 | 🚀 Feature | Description |
 |------------|-------------|
-| **🎯 Smart Detection** | Advanced regex scanning for x.com URLs in any context |
-| **⚡ Instant Replies** | Lightning-fast responses with xcancel.com alternatives |
+| **🎯 Smart Detection** | Advanced regex scanning for multiple platform URLs (Twitter, Instagram, TikTok, Threads) |
+| **⚡ Instant Replies** | Lightning-fast responses with alternative links to rob the parasites of engagement |
 | **🛡️ Rate Limiting** | Anti-spam protection with configurable limits |
 | **🔧 Error Handling** | Robust handling of malformed URLs and edge cases |
 | **📊 Logging** | Comprehensive logging for monitoring and debugging |
-| **⚙️ Configurable** | Environment-based setup for easy deployment |
+| **⚙️ Configurable** | Environment-based setup for easy deployment and custom platform mappings |
+| **🔄 Multi-Platform** | Support for Twitter(X), Instagram, TikTok, Threads, and more with easy configuration |
 
 </div>
 
@@ -34,7 +35,15 @@
 ```
 User: Check out this tweet! https://x.com/example/1234567890
 Bot:  🔗 **Alternative links:**
-     1. https://xcancel.com/example/1234567890
+      1. https://xcancel.com/example/1234567890
+
+User: Nice Instagram post! https://instagram.com/example/post123
+Bot:  🔗 **Alternative links:**
+      1. https://imginn.com/example/post123
+
+User: This TikTok is amazing! https://tiktok.com/@user/video/1234567890
+Bot:  🔗 **Alternative links:**
+      1. https://snaptik.app/@user/video/1234567890
 ```
 
 ## 🛠️ **Quick Setup**
@@ -73,6 +82,17 @@ DISCORD_TOKEN=your_discord_bot_token_here
 BOT_PREFIX=!
 LOG_LEVEL=info
 MAX_REPLIES_PER_MINUTE=30
+
+# 🔗 Platform Mappings (SOURCE_DOMAIN=TARGET_DOMAIN)
+# Default mappings are included, but you can override or add custom ones:
+X_COM=xcancel.com
+INSTAGRAM_COM=imginn.com
+TIKTOK_COM=snaptik.app
+THREADS_NET=photomate.online
+
+# Add custom mappings as needed:
+# FACEBOOK_COM=alternative-site.com
+# YOUTUBE_COM=alternative-site.com
 ```
 
 ### 🤖 **Discord Bot Setup**
@@ -101,12 +121,13 @@ MAX_REPLIES_PER_MINUTE=30
 
 ## How It Works
 
-1. **Link Detection**: The bot uses regex to find x.com URLs in messages
-2. **URL Conversion**: Converts `x.com/username/status/id` to `xcancel.com/username/status/id`
-3. **Automatic Reply**: Responds with the converted links in a formatted message
+1. **Link Detection**: The bot uses dynamic regex to find supported platform URLs in messages
+2. **URL Conversion**: Converts URLs using configurable mappings (e.g., `x.com/...` → `xcancel.com/...`, `instagram.com/...` → `imginn.com/...`)
+3. **Automatic Reply**: Responds with alternative links in a formatted message
 4. **Rate Limiting**: Ensures users can't trigger excessive replies
+5. **Multi-Platform Support**: Easily extensible to support new platforms via environment configuration
 
-### Example
+### Examples
 
 **User Message:**
 ```
@@ -119,6 +140,28 @@ Check out this tweet: https://x.com/example/1234567890
 1. https://xcancel.com/example/1234567890
 ```
 
+**User Message:**
+```
+Nice Instagram post! https://instagram.com/example/post123
+```
+
+**Bot Reply:**
+```
+🔗 **Alternative links:**
+1. https://imginn.com/example/post123
+```
+
+**User Message:**
+```
+This TikTok is amazing! https://tiktok.com/@user/video/1234567890
+```
+
+**Bot Reply:**
+```
+🔗 **Alternative links:**
+1. https://snaptik.app/@user/video/1234567890
+```
+
 ## ⚙️ **Configuration Options**
 
 <div align="center">
@@ -129,6 +172,10 @@ Check out this tweet: https://x.com/example/1234567890
 | `BOT_PREFIX` | Command prefix | `!` | ❌ |
 | `LOG_LEVEL` | Logging verbosity | `info` | ❌ |
 | `MAX_REPLIES_PER_MINUTE` | Anti-spam rate limit | `30` | ❌ |
+| `X_COM` | Alternative for x.com URLs | `xcancel.com` | ❌ |
+| `INSTAGRAM_COM` | Alternative for Instagram URLs | `imginn.com` | ❌ |
+| `TIKTOK_COM` | Alternative for TikTok URLs | `snaptik.app` | ❌ |
+| `THREADS_NET` | Alternative for Threads URLs | `photomate.online` | ❌ |
 
 </div>
 
@@ -212,6 +259,6 @@ CMD ["npm", "start"]
 
 **Made with ❤️ by kyle durepos**
 
-*🔗 Converting x.com links to xcancel.com since 2025*
+*🔗 Robbing the parasites of engagement since 2025*
 
 </div>

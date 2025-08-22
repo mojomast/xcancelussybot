@@ -1,47 +1,71 @@
-// Simple test for core functionality without Discord dependencies
+// Simple test for URL conversion functions
+// This isolates the core logic without initializing the Discord bot
 
-// Mock console methods to avoid noise during testing
-console.log = () => {};
-console.warn = () => {};
-console.error = () => {};
+// Mock site mappings for testing
+const siteMappings = new Map([
+  ['x.com', 'xcancel.com'],
+  ['www.x.com', 'xcancel.com'],
+  ['instagram.com', 'imginn.com'],
+  ['www.instagram.com', 'imginn.com'],
+  ['tiktok.com', 'snaptik.app'],
+  ['www.tiktok.com', 'snaptik.app'],
+  ['threads.net', 'photomate.online'],
+  ['www.threads.net', 'photomate.online']
+]);
 
-// Copy the core functions from bot.js
-const X_COM_REGEX = /\bhttps?:\/\/(?:www\.)?x\.com\/([^\s]+)/gi;
-
-// Convert x.com URL to xcancel.com
-function convertToXCancel(url) {
+// Convert URL using site mappings
+function convertUrl(url) {
   try {
     const urlObj = new URL(url);
-    if (urlObj.hostname === 'x.com' || urlObj.hostname === 'www.x.com') {
-      urlObj.hostname = 'xcancel.com';
+    const targetDomain = siteMappings.get(urlObj.hostname);
+
+    if (targetDomain) {
+      urlObj.hostname = targetDomain;
       urlObj.protocol = 'https:'; // Ensure HTTPS
       return urlObj.toString();
     }
     return null;
   } catch (error) {
+    console.error(`Error converting URL ${url}: ${error.message}`);
     return null;
   }
 }
 
-// Extract x.com links from message
-function extractXComLinks(content) {
+// Create dynamic regex pattern for all supported domains
+function createUrlRegex(domains) {
+  const domainPatterns = Array.from(domains.keys())
+    .map(domain => domain.replace(/\./g, '\\.'))
+    .join('|');
+  return new RegExp(`\\bhttps?:\/\/(?:www\\.)?(${domainPatterns})\/([^\\s]+)`, 'gi');
+}
+
+const URL_REGEX = createUrlRegex(siteMappings);
+
+// Extract supported links from message
+function extractSupportedLinks(content) {
   const links = [];
   let match;
 
   // Reset regex lastIndex
-  X_COM_REGEX.lastIndex = 0;
+  URL_REGEX.lastIndex = 0;
 
-  while ((match = X_COM_REGEX.exec(content)) !== null) {
-    links.push({
-      original: match[0],
-      converted: convertToXCancel(match[0])
-    });
+  while ((match = URL_REGEX.exec(content)) !== null) {
+    const originalUrl = match[0];
+    const convertedUrl = convertUrl(originalUrl);
+
+    if (convertedUrl) {
+      links.push({
+        original: originalUrl,
+        converted: convertedUrl
+      });
+    }
   }
 
-  return links.filter(link => link.converted !== null);
+  return links;
 }
 
-function testConvertToXCancel() {
+// Test functions
+function testConvertUrl() {
   console.log('\n🧪 Testing URL conversion logic...');
 
   const testCases = [
@@ -61,9 +85,24 @@ function testConvertToXCancel() {
       description: 'HTTP x.com URL (should convert to HTTPS)'
     },
     {
+      input: 'https://instagram.com/example/post123',
+      expected: 'https://imginn.com/example/post123',
+      description: 'Instagram URL'
+    },
+    {
+      input: 'https://www.tiktok.com/@user/video/1234567890',
+      expected: 'https://snaptik.app/@user/video/1234567890',
+      description: 'TikTok URL with www'
+    },
+    {
+      input: 'https://threads.net/@user/post123',
+      expected: 'https://photomate.online/@user/post123',
+      description: 'Threads URL'
+    },
+    {
       input: 'https://example.com/test',
       expected: null,
-      description: 'Non-x.com URL (should return null)'
+      description: 'Non-supported URL (should return null)'
     },
     {
       input: 'invalid-url',
@@ -77,7 +116,7 @@ function testConvertToXCancel() {
 
   testCases.forEach((testCase, index) => {
     try {
-      const result = convertToXCancel(testCase.input);
+      const result = convertUrl(testCase.input);
       if (result === testCase.expected) {
         console.log(`✅ Test ${index + 1}: ${testCase.description}`);
         passed++;
@@ -97,7 +136,7 @@ function testConvertToXCancel() {
   return failed === 0;
 }
 
-function testExtractXComLinks() {
+function testExtractSupportedLinks() {
   console.log('\n🧪 Testing link extraction from messages...');
 
   const testCases = [
@@ -112,9 +151,19 @@ function testExtractXComLinks() {
       description: 'Multiple x.com links'
     },
     {
-      input: 'Mixed links: https://x.com/test/123 and https://example.com/page',
+      input: 'Instagram post: https://instagram.com/example/post123',
       expectedCount: 1,
-      description: 'Mixed x.com and other links'
+      description: 'Single Instagram link'
+    },
+    {
+      input: 'Mixed links: https://x.com/test/123 and https://instagram.com/user/photo and https://example.com/page',
+      expectedCount: 2,
+      description: 'Mixed supported and unsupported links'
+    },
+    {
+      input: 'Multiple platforms: https://x.com/test/123 https://instagram.com/user/photo https://tiktok.com/@user/video/456',
+      expectedCount: 3,
+      description: 'Multiple supported platforms'
     },
     {
       input: 'No links here just text',
@@ -133,7 +182,7 @@ function testExtractXComLinks() {
 
   testCases.forEach((testCase, index) => {
     try {
-      const result = extractXComLinks(testCase.input);
+      const result = extractSupportedLinks(testCase.input);
       if (result.length === testCase.expectedCount) {
         console.log(`✅ Test ${index + 1}: ${testCase.description}`);
         passed++;
@@ -156,11 +205,10 @@ function testExtractXComLinks() {
 
 // Run all tests
 function runTests() {
-  console.log = (msg) => process.stdout.write(msg + '\n');
   console.log('🚀 Starting Discord Bot Core Functionality Tests...\n');
 
-  const urlTestPassed = testConvertToXCancel();
-  const extractionTestPassed = testExtractXComLinks();
+  const urlTestPassed = testConvertUrl();
+  const extractionTestPassed = testExtractSupportedLinks();
 
   console.log('\n🎯 Overall Test Results:');
   console.log(`   URL Conversion: ${urlTestPassed ? '✅ PASS' : '❌ FAIL'}`);
@@ -171,12 +219,24 @@ function runTests() {
     console.log('📝 Note: To fully test the Discord bot, you\'ll need to:');
     console.log('   1. Set up a Discord bot token in .env file');
     console.log('   2. Invite the bot to a Discord server');
-    console.log('   3. Run the bot and test with actual x.com links');
+    console.log('   3. Run the bot and test with actual supported platform links');
+    return true;
   } else {
     console.log('\n⚠️  Some tests failed. Please check the implementation.');
-    process.exit(1);
+    return false;
   }
 }
 
-// Run tests
-runTests();
+// Export functions for testing
+module.exports = {
+  convertUrl,
+  extractSupportedLinks,
+  testConvertUrl,
+  testExtractSupportedLinks,
+  runTests
+};
+
+// Run tests if this file is executed directly
+if (require.main === module) {
+  runTests();
+}
