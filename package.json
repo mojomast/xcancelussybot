@@ -1,0 +1,23 @@
+{
+  "name": "xcancel-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord bot that automatically replies with xcancel.com links when x.com links are detected",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
+  "keywords": ["discord", "bot", "xcancel", "x.com"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
